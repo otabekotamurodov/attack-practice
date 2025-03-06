@@ -1,19 +1,38 @@
 import shodan
+import json
+from dotenv import load_dotenv, dotenv_values
 
-SHODAN_API_KEY = "mPlhaagev2zQ4sbtZiCKcAN8Buy5al94"
+config = dotenv_values(".env")
 
-api = shodan.Shodan(SHODAN_API_KEY)
+api = shodan.Shodan(config["API_KEY"])
 
-# Wrap the request in a try/ except block to catch errors
 try:
-    # Search Shodan
-    results = api.search('country:uz')
+    query = "country:uz"
+    results = api.search(query)
 
-    # Show the results
-    print('Results found: {}'.format(results['total']))
+    structured_results = []
+
     for result in results['matches']:
-        print('IP: {}'.format(result['ip_str']))
-        print(result['data'])
-        print('')
+        structured_results.append({
+            "IP": result.get("ip_str", "N/A"),
+            "Port": result.get("port", "N/A"),
+            "Organization": result.get("org", "N/A"),
+            "ISP": result.get("isp", "N/A"),
+            "Hostnames": result.get("hostnames", []),
+            "Location": result.get("location", {}),
+            "Data": result.get("data", "N/A")
+        })
+
+    # JSON faylga saqlash
+    with open("shodan_results.json", "w", encoding="utf-8") as json_file:
+        json.dump(structured_results, json_file, indent=4, ensure_ascii=False)
+
+    # TXT faylga faqat IP-larni saqlash
+    with open("shodan_results.txt", "w", encoding="utf-8") as txt_file:
+        for entry in structured_results:
+            txt_file.write(f"IP: {entry['IP']}\n")
+
+    print("")
+
 except shodan.APIError as e:
-    print('Error: {}'.format(e))
+    print(f"Shodan API xatosi: {e}")
