@@ -2,7 +2,6 @@ http://178.218.207.87/admin/
 http://90.156.197.212/admin/
 http://185.74.6.128/admin/
 http://185.196.213.98/admin/
-http://185.196.213.98/admin/
 http://80.80.218.179/admin/
 http://83.221.179.229/admin/
 http://213.230.125.230/admin/
@@ -18,7 +17,6 @@ http://92.223.44.222/admin/
 http://185.183.243.177/admin/
 http://213.230.125.230/admin/
 http://81.95.230.117/admin/
-http://185.74.4.3/admin/
 http://185.74.4.3/admin/
 http://195.158.20.238/admin/
 http://84.54.83.22/admin/
